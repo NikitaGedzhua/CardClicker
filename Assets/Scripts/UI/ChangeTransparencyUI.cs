@@ -1,61 +1,31 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ChangeTransparencyUI : MonoBehaviour
 {
-    [SerializeField] private Image[] images;
-    [SerializeField] private Text[] texts;
-    [SerializeField] private float fadeTime = 1f;
-     private Color _newColorImage;
-     private Color _newColorText;
-
-    public void ChangeTransparency()
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private float fadeTime = 0.4f;
+    private bool _faded;
+    
+    public void FadeChange()
     {
-       SetTextsTransparency();
-       SetImagesTransparency(); 
-    }
-
-     private void SetTextsTransparency()
-     {
-         foreach (var text in texts)
-         {
-             StartCoroutine(FadeOutText(text));
-         }
-     }
-     
-     private void SetImagesTransparency()
-     {
-         foreach (var image in images)
-         {
-             StartCoroutine(FadeOutImage(image));
-         }
-     }
-
-    private IEnumerator FadeOutText(Text text)
-    {
-        _newColorText = text.color;
-        _newColorText.a = 0;
-        while (text.color.a > 0)
-        {
-            text.color = Color.Lerp(text.color, _newColorText, fadeTime * Time.deltaTime);
-            yield return null; 
-            
-        }
-        text.gameObject.SetActive(false);
+        StartCoroutine(DoFade(canvasGroup, canvasGroup.alpha, _faded ? 1 : 0));
+        _faded = !_faded;
     }
     
-    private IEnumerator FadeOutImage(Image image)
+    private IEnumerator DoFade(CanvasGroup canGroup, float start, float end)
     {
-        _newColorImage = image.color;
-        _newColorImage.a = 0;
-        while (image.color.a > 0)
+        float counter = 0f;
+        while (counter < fadeTime)
         {
-            if (image.color.a <= 0.1f) image.color = _newColorImage;
-            
-            image.color = Color.Lerp(image.color, _newColorImage, fadeTime * Time.deltaTime);
-            yield return null; 
+            counter += Time.deltaTime;
+            canGroup.alpha = Mathf.Lerp(start, end, counter / fadeTime);
+
+            yield return null;
+            if (_faded && canGroup.alpha == 0)
+            {
+                gameObject.SetActive(false);
+            }
         }
-        image.gameObject.SetActive(false);
     }
 }
