@@ -7,6 +7,6 @@ public class CreateAssetBundles
    [MenuItem("Assets/Build Asset Bundles")]
    static void BuildAssetBundles()
    {
-      BuildPipeline.BuildAssetBundles(_path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
+      BuildPipeline.BuildAssetBundles(_path, BuildAssetBundleOptions.None, BuildTarget.Android);
    }
 }

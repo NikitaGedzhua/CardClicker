@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadAssetsLocalService : MonoBehaviour, ILoadAssetsService
+public class LoadAssetsLocalService : MonoBehaviour
 {
     private string _bundlePath = "Assets/AssetBundles";
     private string _bundlename = "cards";

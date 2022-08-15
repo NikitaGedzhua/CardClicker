@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -6,85 +5,53 @@ using UnityEngine.UI;
 
 public class ButtonActionsController : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem particle; 
-    [SerializeField] private GameObject scrollContent; 
-    [SerializeField] private CanvasGroup canvasGroup; 
-    private readonly List<Button> _buttonsInView = new List<Button>();
-    private float _timeToDestroy = 1f;
-    private float _timeToMove = 1f;
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private float timeToDestroy = 1f;
+    [SerializeField] private float timeToMove = 0.6f;
 
-    public List<Button> ButtonsInView => _buttonsInView;
-
-    private void Start()
+    public void AddToListAllButtons(List<Button> buttonList)
     {
-      AddToListAllButtons(); 
+       foreach (var button in buttonList)
+       {
+          button.onClick.AddListener(() => ButtonActions(buttonList, button));
+       }
+    }
+
+    private void ButtonActions(List<Button> buttonList, Button button) 
+    { 
+       SetButtonNewPosition(buttonList, button); 
+       RemoveButtonFromList(buttonList, button); 
+       DestroyGameObject(button.gameObject, timeToDestroy); 
     }
     
-    private void AddToListAllButtons() 
-    { 
-       for (int i = 0; i < scrollContent.transform.childCount; i++) 
-       { 
-          if (!scrollContent.transform.GetChild(i).GetComponent<Button>()) return;
-          
-          var button = scrollContent.transform.GetChild(i).GetComponent<Button>(); 
-          
-          _buttonsInView.Add(button); 
-          button.onClick.AddListener((() =>ButtonActions(button) )); 
-       } 
-    }
-
-    private void ButtonActions(Button button) 
-    { 
-       SetButtonNewPosition(button); 
-       ShowPurticle(button); 
-       FadeOutButton(button); 
-       RemoveButtonFromList(button); 
-       DestroyGameObject(button.gameObject, _timeToDestroy); 
-    }
-    
-    private void SetButtonNewPosition(Button button)
+    private void SetButtonNewPosition(List<Button> buttonList, Button button)
     {
-       var currentIndex = _buttonsInView.IndexOf(button);
+       var currentIndex = buttonList.IndexOf(button);
      
-       if (currentIndex - 1 < -1 || currentIndex + 1 >= _buttonsInView.Count) return;
+       if (currentIndex - 1 < -1 || currentIndex + 1 >= buttonList.Count) return;
       
        var indexNextButton = currentIndex + 1;
      
        for (var i = currentIndex ; i < indexNextButton; i++)
        {
-          if (indexNextButton >= _buttonsInView.Count) return;
+          if (indexNextButton >= buttonList.Count) return;
           canvasGroup.interactable = false;
           indexNextButton++;
-          var prevButton = _buttonsInView[i]; 
+          var prevButton = buttonList[i]; 
           var nextButton = i + 1;
           
-          _buttonsInView[nextButton].transform.DOLocalMove(prevButton.gameObject.transform.localPosition, _timeToMove)
+          buttonList[nextButton].transform.DOLocalMove(prevButton.gameObject.transform.localPosition, timeToMove)
              .SetEase(Ease.InQuad).onComplete += () => canvasGroup.interactable = true;
        }
     }
-   private void ShowPurticle(Button button)
-   {
-      var shape = particle.shape;
-      shape.sprite = button.image.sprite;
-      shape.texture = button.image.sprite.texture;
-      
-      var newParticle =  Instantiate(particle, button.transform.position, button.transform.rotation);
-      
-      DestroyGameObject(newParticle.gameObject, _timeToDestroy);
-   }
 
-   private void FadeOutButton(Button button)
-   {
-      button.image.DOFade(0, _timeToDestroy / 2);
-   }
-
-   private void DestroyGameObject(GameObject button, float time)
+    private void DestroyGameObject(GameObject button, float time)
    {
       Destroy(button, time);
    }
 
-   private void RemoveButtonFromList(Button button)
+   private void RemoveButtonFromList(List<Button> buttonList, Button button)
    {
-      _buttonsInView.Remove(button); 
+      buttonList.Remove(button); 
    }
 }
