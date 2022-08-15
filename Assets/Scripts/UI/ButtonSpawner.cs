@@ -93,7 +93,7 @@ public class ButtonSpawner : MonoBehaviour
         {
             var button = Instantiate(butonPrefab, actionsController.gameObject.transform);
             buttonsInView.Add(button);
-            button.image.sprite = imagesSpawnedCards[i];
+            button.image.sprite = i >= imagesSpawnedCards.Count ? loadImages.Images[Random.Range(0, 4)] : imagesSpawnedCards[i];
         }
     }
 
