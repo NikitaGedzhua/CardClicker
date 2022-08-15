@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -8,7 +9,6 @@ public class ButtonSpawner : MonoBehaviour
     [SerializeField] private ButtonActionsController actionsController;
     [SerializeField] private LoadImages loadImages;
     [SerializeField] private DataSaver dataSaver;
-    [SerializeField] private DataReader dataReader;
     [SerializeField] private Button butonPrefab;
     [SerializeField] private Button resetButton;
     [SerializeField] private int buttonsAmount = 5;
@@ -17,11 +17,9 @@ public class ButtonSpawner : MonoBehaviour
     private List<Sprite> imagesSpawnedCards = new List<Sprite>();
     private List<string> _lastDataNames = new List<string>();
     
-    [SerializeField] private CardData cardData = new CardData();
-    
     private void Start()
     {
-        dataReader.LoadFromJson(_lastDataNames);
+        LoadFromJson();
         SpawnCards();
         AddActionsToCards();
         SaveSpawnedCardsImage();
@@ -96,6 +94,16 @@ public class ButtonSpawner : MonoBehaviour
             var button = Instantiate(butonPrefab, actionsController.gameObject.transform);
             buttonsInView.Add(button);
             button.image.sprite = imagesSpawnedCards[i];
+        }
+    }
+
+    private void LoadFromJson()
+    {
+        if (File.Exists(Application.dataPath + "/CardData.json"))
+        {
+            var fileContents = File.ReadAllText(Application.dataPath + "/CardData.json");
+            var deserializedData = JsonUtility.FromJson<CardData>(fileContents);
+            _lastDataNames = deserializedData.names;
         }
     }
 }

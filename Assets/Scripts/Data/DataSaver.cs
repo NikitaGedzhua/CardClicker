@@ -12,8 +12,8 @@ public class DataSaver : MonoBehaviour
     {
         for (int i = 0; i < buttonList.Count; i++)
         {
-            var imageName = buttonList[i].image.sprite.name;
-            cardData.names.Add(imageName);
+            name = buttonList[i].image.sprite.name;
+            cardData.names.Add(name);
         }
         
         var data = JsonUtility.ToJson(cardData);
