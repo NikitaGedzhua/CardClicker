@@ -69,11 +69,11 @@ public class LoadAssetsLocalService : MonoBehaviour, ILoadAssetsService
     {
         foreach (var card in sprites)
         {
-            if (File.Exists(Application.dataPath + "/Resources/"+ card.name + ".png"))
+            if (File.Exists(Application.dataPath + card.name + ".png"))
             {
                 return;
             }
-            File.WriteAllBytes(Application.dataPath + "/Resources/"+ card.name + ".png", card.EncodeToPNG());
+            File.WriteAllBytes(Application.dataPath + card.name + ".png", card.EncodeToPNG());
             progressText.text = _assetLoadProgress + card.name;
         }
     }

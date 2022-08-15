@@ -1,17 +1,21 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonsController : MonoBehaviour
+public class ButtonActionsController : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particle; 
     [SerializeField] private GameObject scrollContent; 
+    [SerializeField] private CanvasGroup canvasGroup; 
     private readonly List<Button> _buttonsInView = new List<Button>();
     private float _timeToDestroy = 1f;
     private float _timeToMove = 1f;
-    
-    private void Start() 
+
+    public List<Button> ButtonsInView => _buttonsInView;
+
+    private void Start()
     {
       AddToListAllButtons(); 
     }
@@ -20,7 +24,10 @@ public class ButtonsController : MonoBehaviour
     { 
        for (int i = 0; i < scrollContent.transform.childCount; i++) 
        { 
+          if (!scrollContent.transform.GetChild(i).GetComponent<Button>()) return;
+          
           var button = scrollContent.transform.GetChild(i).GetComponent<Button>(); 
+          
           _buttonsInView.Add(button); 
           button.onClick.AddListener((() =>ButtonActions(button) )); 
        } 
@@ -46,13 +53,13 @@ public class ButtonsController : MonoBehaviour
        for (var i = currentIndex ; i < indexNextButton; i++)
        {
           if (indexNextButton >= _buttonsInView.Count) return;
-          
+          canvasGroup.interactable = false;
           indexNextButton++;
           var prevButton = _buttonsInView[i]; 
           var nextButton = i + 1;
           
           _buttonsInView[nextButton].transform.DOLocalMove(prevButton.gameObject.transform.localPosition, _timeToMove)
-             .SetEase(Ease.InQuad);
+             .SetEase(Ease.InQuad).onComplete += () => canvasGroup.interactable = true;
        }
     }
    private void ShowPurticle(Button button)

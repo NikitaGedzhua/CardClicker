@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4190943354
+CRC: 1548806675
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8b704411d71061dde8ff2c760fad81ab
+    Hash: 52877d310dd2eaa31aabb77f763de415
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4df8c69f2c8a6ad9e3cbf82bb83e4dc3
@@ -15,9 +15,9 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Images/Card1.png
-- Assets/Images/Card4.png
-- Assets/Images/Card5.png
-- Assets/Images/Card3.png
-- Assets/Images/Card2.png
+- Assets/Resources/Card2.png
+- Assets/Resources/Card1.png
+- Assets/Resources/Card4.png
+- Assets/Resources/Card3.png
+- Assets/Resources/Card5.png
 Dependencies: []
