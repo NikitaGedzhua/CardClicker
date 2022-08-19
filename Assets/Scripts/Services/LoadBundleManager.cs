@@ -23,6 +23,11 @@ public class LoadBundleManager : MonoBehaviour
        LoadAssetBundles();
     }
 
+    private void Update()
+    {
+        progressLoadImage.fillAmount += 0.3f * Time.deltaTime;
+    }
+
     private void LoadAssetBundles()
     {
         loadAssetsBundleService.StartLoadAssets(progressLoadText, progressLoadImage);

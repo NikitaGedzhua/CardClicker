@@ -12,7 +12,7 @@ public class DataSaver : MonoBehaviour
     {
         for (int i = 0; i < buttonList.Count; i++)
         {
-            name = buttonList[i].image.sprite.name;
+            name = buttonList[i].GetComponentsInChildren<Image>()[1].sprite.name;
             cardData.names.Add(name);
         }
         

@@ -13,6 +13,7 @@ namespace UnityEngine.UI.Extensions
     public class HorizontalScrollSnap : ScrollSnapBase
     {
         private bool updated = true;
+        private float time = 0;
 
         void Start()
         {
@@ -25,11 +26,18 @@ namespace UnityEngine.UI.Extensions
 
         void Update()
         {
+            time +=  Time.deltaTime;
+            if (time > 3)
+            {
+                NextScreen();
+                time = 0;
+            }
+            
             updated = false;
-
+            
             if (!_lerp && (_scroll_rect.velocity == Vector2.zero && _scroll_rect.inertia))
             {
-                if (!_settled && !_pointerDown)
+                if (!_settled && !_pointerDown) 
                 {
                     if (!IsRectSettledOnaPage(_screensContainer.anchoredPosition))
                     {

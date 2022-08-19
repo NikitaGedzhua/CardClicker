@@ -12,23 +12,24 @@ public class ButtonParticle : MonoBehaviour
     private void Start()
     {
         button.onClick.AddListener(() => ShowParticle(button));
-        button.onClick.AddListener(() => FadeOutButton(button));
     }
 
     private void ShowParticle(Button bt)
     {
         var shape = particle.shape;
-        shape.sprite = bt.image.sprite;
-        shape.texture = bt.image.sprite.texture;
+        shape.sprite = bt.GetComponentsInChildren<Image>()[1].sprite;
+        shape.texture = bt.GetComponentsInChildren<Image>()[1].sprite.texture;
       
-        var newParticle =  Instantiate(particle, bt.transform.position, bt.transform.rotation);
-      
+        var newParticle =  Instantiate(particle, bt.GetComponentsInChildren<Image>()[1].transform.position, 
+            bt.GetComponentsInChildren<Image>()[1].transform.rotation);
         DestroyGameObject(newParticle.gameObject, particleTime);
+        FadeOutButton(button);
     }
     
-    private void FadeOutButton(Button button)
+    private void FadeOutButton(Button but)
     {
-        button.image.DOFade(0, fadeTime);
+        but.image.DOFade(0, fadeTime);
+        but.GetComponentsInChildren<Image>()[1].DOFade(0, fadeTime);
     }
     
     private void DestroyGameObject(GameObject button, float time)

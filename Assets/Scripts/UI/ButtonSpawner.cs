@@ -41,7 +41,7 @@ public class ButtonSpawner : MonoBehaviour
                 var button = Instantiate(butonPrefab, actionsController.gameObject.transform);
                 var image = _lastDataNames[i];
                 buttonsInView.Add(button);
-                button.image.sprite = loadImages.GetImage(image);
+                button.GetComponentsInChildren<Image>()[1].sprite = loadImages.GetImage(image);
             }
         }
         else
@@ -50,7 +50,7 @@ public class ButtonSpawner : MonoBehaviour
             {
                 var button = Instantiate(butonPrefab, actionsController.gameObject.transform);
                 buttonsInView.Add(button);
-                button.image.sprite = loadImages.Images[Random.Range(0,4)];
+                button.GetComponentsInChildren<Image>()[1].sprite = loadImages.Images[Random.Range(0,4)];
             }
         }
     }
@@ -59,7 +59,7 @@ public class ButtonSpawner : MonoBehaviour
     {
         for (var i = 0; i < buttonsInView.Count; i++)
         {
-            var sprite = buttonsInView[i].image.sprite;
+            var sprite = buttonsInView[i].GetComponentsInChildren<Image>()[1].sprite;
             imagesSpawnedCards.Add(sprite);
         }
     }
@@ -93,7 +93,7 @@ public class ButtonSpawner : MonoBehaviour
         {
             var button = Instantiate(butonPrefab, actionsController.gameObject.transform);
             buttonsInView.Add(button);
-            button.image.sprite = i >= imagesSpawnedCards.Count ? loadImages.Images[Random.Range(0, 4)] : imagesSpawnedCards[i];
+            button.GetComponentsInChildren<Image>()[1].sprite = i >= imagesSpawnedCards.Count ? loadImages.Images[Random.Range(0, 4)] : imagesSpawnedCards[i];
         }
     }
 

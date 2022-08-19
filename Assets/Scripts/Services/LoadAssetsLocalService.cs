@@ -17,7 +17,7 @@ public class LoadAssetsLocalService : MonoBehaviour
     private string _percent = "%";
     
     private float _progressMultipler = 100f;
-    private float _delay = 2f;
+    private float _delay = 3f;
 
     public event Action LoadCompleted; 
 
@@ -29,13 +29,12 @@ public class LoadAssetsLocalService : MonoBehaviour
     private IEnumerator LoadAssetsAsync(string bundlePath, string bundleName, Text progressText, Image progressImage)
     {
         var bundleLoadRequest = AssetBundle.LoadFromFileAsync(Path.Combine(bundlePath, bundleName));
-        
+
         while(!bundleLoadRequest.isDone)
         {
             yield return null;
-            progressText.text = _fileLoadProgress + (bundleLoadRequest.progress * _progressMultipler) + _percent;
-            progressImage.fillAmount = bundleLoadRequest.progress /2;
-        }
+            progressText.text = _fileLoadProgress + bundleName;
+        } 
         yield return bundleLoadRequest;
         
         var myLoadedAssetBundle = bundleLoadRequest.assetBundle;
